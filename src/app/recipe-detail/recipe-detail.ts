@@ -1,8 +1,8 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { Ingredient } from '../models';
+import { Ingredient, RecipeModel } from '../models';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { Recipe } from '../recipe';
 import { MatButtonModule } from '@angular/material/button';
+import { httpResource } from '@angular/common/http';
 
 @Component({
   selector: 'app-recipe-detail',
@@ -12,23 +12,22 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class RecipeDetail {
   private readonly route = inject(ActivatedRoute);
-  protected readonly id = Number(this.route.snapshot.params['id']);
-  protected readonly recipes = inject(Recipe);
+  protected readonly id = this.route.snapshot.params['id'];
 
-  protected readonly recipe = computed(
-    () => this.recipes.getById(this.id)
+  readonly recipe = httpResource<RecipeModel>(() =>
+    `http://localhost:3000/recipes/${this.id}`
   );
 
   protected readonly servings = signal<number>(1);
   protected readonly ingredients = computed<Ingredient[]>(
     () => {
-      return this.recipe().ingredients.map<Ingredient>(
+      return this.recipe.value()?.ingredients.map<Ingredient>(
         (ingredient) => ({
           name: ingredient.name,
           quantity: ingredient.quantity * this.servings(),
           unit: ingredient.unit,
         })
-      )
+      ) || [];
     }
   );
 

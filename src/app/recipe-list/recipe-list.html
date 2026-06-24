@@ -1,11 +1,20 @@
 <mat-form-field>
     <!-- <mat-label>Name</mat-label> -->
-    <input type="text" matInput [ngModel]="searchTerm()" (ngModelChange)="searchTerm.set($event)" placeholder="Search..." />
+    <input type="text" matInput [ngModel]="searchTerm()" (ngModelChange)="searchTerm.set($event)"
+        placeholder="Search..." />
 </mat-form-field>
 
 <div>
+    @if(recipes.status() === 'error'){
+    <p>Failed to load recipes.</p>
+    } @else if(recipes.status() === 'loading' || recipes.status() === 'idle'){
+    <p>Loading...</p>
+    } @else if(recipes.getAll().length === 0){
+    <p>No recipes are available.</p>
+    } @else {
     @for (recipe of filtered(); track recipe.id) {
     <a [routerLink]="['/recipes', recipe.id]">{{ recipe.name }} @if(recipe.isFavorite){★}</a>
+    }
     }
 </div>
 

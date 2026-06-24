@@ -5,7 +5,7 @@ export interface Ingredient {
 }
 
 export interface RecipeModel {
-    id: number;
+    id: string;
     name: string;
     description: string;
     authorEmail: string;

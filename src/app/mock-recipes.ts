@@ -2,7 +2,7 @@ import { RecipeModel } from './models';
 
 export const MOCK_RECIPES: RecipeModel[] = [
     {
-        id: 1,
+        id: "1",
         name: 'Spaghetti Carbonara',
         description: 'A classic Italian pasta dish.',
         authorEmail: 'mario@italy.com',
@@ -17,7 +17,7 @@ export const MOCK_RECIPES: RecipeModel[] = [
         ],
     },
     {
-        id: 2,
+        id: "2",
         name: 'Caprese Salad',
         description: 'A simple and refreshing Italian salad.',
         authorEmail: 'sofia@italy.com',

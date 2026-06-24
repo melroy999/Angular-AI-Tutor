@@ -1,34 +1,31 @@
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable, ResourceStatus } from '@angular/core';
 import { RecipeModel } from './models';
-import { MOCK_RECIPES } from './mock-recipes';
+import { httpResource, HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Recipe {
-  private readonly recipeService = signal<RecipeModel[]>(MOCK_RECIPES);
-
-
-  getById(id: number): RecipeModel {
-    const recipe = this.recipeService().find((v) => v.id === id);
-    if (!recipe) {
-      throw Error("A recipe with ID " + id + " cannot be found.");
-    }
-    return recipe;
-  }
-  getFirst(): RecipeModel {
-    return this.recipeService()[0];
-  }
+  private http = inject(HttpClient);
+  readonly recipes = httpResource<RecipeModel[]>(() =>
+    'http://localhost:3000/recipes', {
+    defaultValue: [],
+  });
 
   getAll(): RecipeModel[] {
-    return this.recipeService();
+    return this.recipes.value();
   }
 
-  size(): number {
-    return this.recipeService().length;
+  status(): ResourceStatus {
+    return this.recipes.status();
   }
 
-  addRecipe(model: RecipeModel): void {
-    this.recipeService.update((current) => [...current, model]);
+  refreshAll(): void {
+    this.recipes.reload();
+  }
+
+  addRecipe(model: RecipeModel): Observable<RecipeModel> {
+    return this.http.post<RecipeModel>("http://localhost:3000/recipes", model);
   }
 }

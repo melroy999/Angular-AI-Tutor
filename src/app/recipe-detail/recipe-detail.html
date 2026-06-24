@@ -1,12 +1,15 @@
 <a [routerLink]="['/recipes']">Return</a>
 
+@if(recipe.status() === 'error'){
+<p>Failed to load recipe.</p>
+} @else if (recipe.status() === 'resolved') {
 <div class="detail-container">
-    <img class="recipe-image" [src]="recipe().imgUrl" [alt]="'Photo of ' + recipe().name">
+    <img class="recipe-image" [src]="recipe.value()?.imgUrl" [alt]="'Photo of ' + recipe.value()?.name">
 
     <div class="recipe-info">
-        <h2 class="recipe-name">{{ recipe().name }}</h2>
-        <p class="recipe-description">{{ recipe().description }}</p>
-        <p class="recipe-author">Author: {{ recipe().authorEmail }}</p>
+        <h2 class="recipe-name">{{ recipe.value()?.name }}</h2>
+        <p class="recipe-description">{{ recipe.value()?.description }}</p>
+        <p class="recipe-author">Author: {{ recipe.value()?.authorEmail }}</p>
 
         <div class="servings-control">
             <button matButton="outlined" (click)="decrease()">-</button>
@@ -22,3 +25,6 @@
         </ul>
     </div>
 </div>
+} @else {
+<p>Loading...</p>
+}
