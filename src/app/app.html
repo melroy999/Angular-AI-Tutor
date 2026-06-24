@@ -1,3 +1,9 @@
+@if(auth.loggedIn()) {
+<button (click)="auth.logout()">Log-out</button>
+} @else {
+<button (click)="auth.login()">Log-in</button>
+}
+
 <h1>{{ title() }}</h1>
 
 <router-outlet />

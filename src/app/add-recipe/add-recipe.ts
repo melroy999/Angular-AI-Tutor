@@ -1,12 +1,13 @@
-import { Component, inject, ViewChild } from '@angular/core';
+import { Component, effect, inject, ViewChild } from '@angular/core';
 import { FormBuilder, NgForm, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Recipe } from '../recipe';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Auth } from '../auth';
 
 @Component({
   selector: 'app-add-recipe',
@@ -17,11 +18,21 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class AddRecipe {
   private readonly fb = inject(FormBuilder);
   protected readonly recipes = inject(Recipe);
-  // protected readonly router = inject(Router);
+  private readonly router = inject(Router);
   private readonly snackBar = inject(MatSnackBar);
+  private readonly auth = inject(Auth);
 
   // Bind the form so we have a direct reference to it.
   @ViewChild('nativeFormRef') nativeForm!: NgForm;
+
+  constructor() {
+    // Navigate back to index when loggedIn changes to false.
+    effect(() => {
+      if (!this.auth.loggedIn()) {
+        this.router.navigate(['/recipes']);
+      }
+    });
+  }
 
   protected readonly form = this.fb.nonNullable.group({
     name: ['', Validators.required],

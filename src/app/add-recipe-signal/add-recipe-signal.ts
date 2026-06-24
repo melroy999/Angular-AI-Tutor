@@ -1,12 +1,13 @@
-import { Component, inject, signal, ViewChild } from '@angular/core';
+import { Component, effect, inject, signal, ViewChild } from '@angular/core';
 import { Recipe } from '../recipe';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { form, FormField, debounce, required, email, FormRoot } from '@angular/forms/signals';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, NgForm } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Auth } from '../auth';
 
 @Component({
   selector: 'app-add-recipe-signal',
@@ -16,8 +17,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class AddRecipeSignal {
   protected readonly recipes = inject(Recipe);
-  // private router = inject(Router);
+  private readonly router = inject(Router);
   private readonly snackBar = inject(MatSnackBar);
+  private readonly auth = inject(Auth);
 
   // Bind the form so we have a direct reference to it.
   @ViewChild('nativeFormRef') nativeForm!: NgForm;
@@ -70,4 +72,13 @@ export class AddRecipeSignal {
       }
     }
   );
+
+  constructor() {
+    // Navigate back to index when loggedIn changes to false.
+    effect(() => {
+      if (!this.auth.loggedIn()) {
+        this.router.navigate(['/recipes']);
+      }
+    });
+  }
 }
