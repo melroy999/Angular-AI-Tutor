@@ -1,0 +1,32 @@
+<form [formRoot]="recipeForm" #nativeFormRef="ngForm">
+    <mat-form-field class="full-width">
+        <mat-label>Name</mat-label>
+        <input type="text" matInput [formField]="recipeForm.name" />
+        @if (recipeForm.name().touched()) {
+        @for (error of recipeForm.name().errors(); track error) {
+        <mat-error>{{ error.message }}</mat-error>
+        }
+        }
+    </mat-form-field>
+    <mat-form-field class="full-width">
+        <mat-label>Description</mat-label>
+        <input type="text" matInput [formField]="recipeForm.description" />
+        @if (recipeForm.description().touched()) {
+        @for (error of recipeForm.description().errors(); track error) {
+        <mat-error>{{ error.message }}</mat-error>
+        }
+        }
+    </mat-form-field>
+    <mat-form-field class="full-width">
+        <mat-label>Author</mat-label>
+        <input type="email" matInput [formField]="recipeForm.authorEmail" />
+        @if (recipeForm.authorEmail().touched()) {
+        @for (error of recipeForm.authorEmail().errors(); track error) {
+        <mat-error>{{ error.message }}</mat-error>
+        }
+        }
+    </mat-form-field>
+    <button matButton="filled" type="submit" [disabled]="!recipeForm().valid()">Send</button>
+</form>
+
+<a [routerLink]="['/recipes']">Return</a>

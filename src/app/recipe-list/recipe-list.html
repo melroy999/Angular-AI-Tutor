@@ -1,0 +1,17 @@
+<mat-form-field>
+    <!-- <mat-label>Name</mat-label> -->
+    <input type="text" matInput [ngModel]="searchTerm()" (ngModelChange)="searchTerm.set($event)" placeholder="Search..." />
+</mat-form-field>
+
+<div>
+    @for (recipe of filtered(); track recipe.id) {
+    <a [routerLink]="['/recipes', recipe.id]">{{ recipe.name }} @if(recipe.isFavorite){★}</a>
+    }
+</div>
+
+<div>
+    <a [routerLink]="['/recipes/new']">Add new recipe</a>
+</div>
+<div>
+    <a [routerLink]="['/recipes/new_signal']">Add new recipe (signal)</a>
+</div>

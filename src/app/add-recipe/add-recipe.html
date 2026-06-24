@@ -1,0 +1,17 @@
+<form [formGroup]="form" (ngSubmit)="submit()">
+    <mat-form-field class="full-width">
+        <mat-label>Name</mat-label>
+        <input type="text" matInput formControlName="name" />
+    </mat-form-field>
+    <mat-form-field class="full-width">
+        <mat-label>Description</mat-label>
+        <input type="text" matInput formControlName="description" />
+    </mat-form-field>
+    <mat-form-field class="full-width">
+        <mat-label>Author</mat-label>
+        <input type="email" matInput formControlName="authorEmail" />
+    </mat-form-field>
+    <button matButton="filled" type="submit">Send</button>
+</form>
+
+<a [routerLink]="['/recipes']">Return</a>

@@ -1,0 +1,24 @@
+<a [routerLink]="['/recipes']">Return</a>
+
+<div class="detail-container">
+    <img class="recipe-image" [src]="recipe().imgUrl" [alt]="'Photo of ' + recipe().name">
+
+    <div class="recipe-info">
+        <h2 class="recipe-name">{{ recipe().name }}</h2>
+        <p class="recipe-description">{{ recipe().description }}</p>
+        <p class="recipe-author">Author: {{ recipe().authorEmail }}</p>
+
+        <div class="servings-control">
+            <button matButton="outlined" (click)="decrease()">-</button>
+            <span>{{ servings() }} servings</span>
+            <button matButton="outlined" (click)="increase()">+</button>
+        </div>
+
+        <h3 class="ingredients-heading">Ingredients</h3>
+        <ul class="ingredients-list">
+            @for (ingredient of ingredients(); track ingredient.name) {
+            <li>{{ ingredient.name }}, {{ ingredient.quantity }} {{ ingredient.unit }}</li>
+            }
+        </ul>
+    </div>
+</div>
