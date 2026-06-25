@@ -1,6 +1,6 @@
-import { inject, Injectable, ResourceStatus } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { RecipeModel } from './models';
-import { httpResource, HttpClient } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../environments/environment';
 
@@ -9,21 +9,13 @@ import { environment } from '../environments/environment';
 })
 export class Recipe {
   private http = inject(HttpClient);
-  readonly recipes = httpResource<RecipeModel[]>(() =>
-    `${environment.apiUrl}/recipes`, {
-    defaultValue: [],
-  });
 
-  getAll(): RecipeModel[] {
-    return this.recipes.value();
+  fetchAll(): Observable<RecipeModel[]> {
+    return this.http.get<RecipeModel[]>(`${environment.apiUrl}/recipes`);
   }
 
-  status(): ResourceStatus {
-    return this.recipes.status();
-  }
-
-  refreshAll(): void {
-    this.recipes.reload();
+  searchRecipes(term: string): Observable<RecipeModel[]> {
+    return this.http.get<RecipeModel[]>(`${environment.apiUrl}/recipes?name:contains=${term}`);
   }
 
   addRecipe(model: RecipeModel): Observable<RecipeModel> {

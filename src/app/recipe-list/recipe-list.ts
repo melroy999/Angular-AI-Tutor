@@ -6,8 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { catchError, debounceTime, distinctUntilChanged, map, of, skip, startWith, switchMap } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment';
+import { Recipe } from '../recipe';
 
 @Component({
   selector: 'app-recipe-list',
@@ -18,7 +17,7 @@ import { environment } from '../../environments/environment';
 export class RecipeList {
   protected readonly searchTerm = signal<string>('');
   private readonly searchTerm$ = toObservable(this.searchTerm);
-  private http = inject(HttpClient);
+  private recipes = inject(Recipe);
   private route = inject(ActivatedRoute);
   protected readonly results$ = this.searchTerm$.pipe(
     // Skip the initial '' emission from searchTerm$'s toObservable.
@@ -26,10 +25,10 @@ export class RecipeList {
     debounceTime(300),
     distinctUntilChanged(),
     switchMap((term)=> {
-      return this.http.get<RecipeModel[]>(`${environment.apiUrl}/recipes?name:contains=${term.trim()}`).pipe(
+      return this.recipes.searchRecipes(term.trim()).pipe(
         // Convert the result to a state object.
         map((data) => ({ loading: false, error: null, results: data })),
-        // An observable is expected; use of() to wrap a plain value into an Observable.
+        // An Observable is expected; use of() to wrap a plain value into an Observable.
         catchError((err) => of({ loading: false, error: err, results: [] })),
         // Emit a state object immediately while the actual request is in-flight.
         startWith({ loading: true, error: null, results: [] })

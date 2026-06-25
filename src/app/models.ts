@@ -13,9 +13,3 @@ export interface RecipeModel {
     isFavorite: boolean;
     ingredients: Ingredient[];
 }
-
-export interface SearchState {
-  loading: boolean;
-  error: any;
-  results: RecipeModel[];
-}

@@ -16,7 +16,7 @@ import { Auth } from '../auth';
   styleUrl: './add-recipe-signal.css',
 })
 export class AddRecipeSignal {
-  protected readonly recipes = inject(Recipe);
+  private readonly recipes = inject(Recipe);
   private readonly router = inject(Router);
   private readonly snackBar = inject(MatSnackBar);
   private readonly auth = inject(Auth);
@@ -52,7 +52,6 @@ export class AddRecipeSignal {
             ingredients: [],
           }).subscribe({
             next: () => {
-              this.recipes.refreshAll();
               this.recipeForm().reset({ name: '', authorEmail: '', description: '' });
 
               // Hack to ensure the form doesn't display errors upon clear after successful submission.

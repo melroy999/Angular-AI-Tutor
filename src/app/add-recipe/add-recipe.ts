@@ -18,7 +18,7 @@ import { catchError, EMPTY, finalize, tap } from 'rxjs';
 })
 export class AddRecipe {
   private readonly fb = inject(FormBuilder);
-  protected readonly recipes = inject(Recipe);
+  private readonly recipes = inject(Recipe);
   private readonly router = inject(Router);
   private readonly snackBar = inject(MatSnackBar);
   private readonly auth = inject(Auth);
@@ -56,7 +56,6 @@ export class AddRecipe {
         ingredients: [],
       }).pipe(
         tap(() => {
-          this.recipes.refreshAll();
           this.form.reset();
 
           // Hack to ensure the form doesn't display errors upon clear after successful submission.
