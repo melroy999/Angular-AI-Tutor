@@ -1,23 +1,43 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RecipeModel } from '../models';
-import { Recipe } from '../recipe';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { catchError, debounceTime, distinctUntilChanged, map, of, skip, startWith, switchMap } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-recipe-list',
-  imports: [ FormsModule, RouterLink, MatFormFieldModule, MatInputModule],
+  imports: [FormsModule, RouterLink, MatFormFieldModule, MatInputModule],
   templateUrl: './recipe-list.html',
   styleUrl: './recipe-list.css',
 })
 export class RecipeList {
-  protected readonly recipes = inject(Recipe);
   protected readonly searchTerm = signal<string>('');
-
-  protected readonly filtered = computed<RecipeModel[]>(() => {
-    const term = this.searchTerm().toLowerCase();
-    return this.recipes.getAll().filter((recipe) => recipe.name.toLowerCase().includes(term));
-  });
+  private readonly searchTerm$ = toObservable(this.searchTerm);
+  private http = inject(HttpClient);
+  private route = inject(ActivatedRoute);
+  protected readonly results$ = this.searchTerm$.pipe(
+    // Skip the initial '' emission from searchTerm$'s toObservable.
+    skip(1),
+    debounceTime(300),
+    distinctUntilChanged(),
+    switchMap((term)=> {
+      return this.http.get<RecipeModel[]>(`${environment.apiUrl}/recipes?name:contains=${term.trim()}`).pipe(
+        // Convert the result to a state object.
+        map((data) => ({ loading: false, error: null, results: data })),
+        // An observable is expected; use of() to wrap a plain value into an Observable.
+        catchError((err) => of({ loading: false, error: err, results: [] })),
+        // Emit a state object immediately while the actual request is in-flight.
+        startWith({ loading: true, error: null, results: [] })
+      )
+    }),
+  );
+  protected readonly filtered = toSignal(
+    this.results$, 
+    { initialValue: { loading: false, error: null, results: this.route.snapshot.data['recipes'] } }
+  );
 }

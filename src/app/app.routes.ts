@@ -4,10 +4,11 @@ import { AddRecipe } from './add-recipe/add-recipe';
 import { RecipeDetail } from './recipe-detail/recipe-detail';
 import { AddRecipeSignal } from './add-recipe-signal/add-recipe-signal';
 import { authGuard } from './auth-guard';
+import { recipeListResolver } from './recipe-list-resolver';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'recipes', pathMatch: 'full' },
-    { path: 'recipes', component: RecipeList },
+    { path: 'recipes', component: RecipeList, resolve: { recipes: recipeListResolver } },
     { path: 'recipes/new', component: AddRecipe, canActivate: [authGuard] },
     { path: 'recipes/new_signal', component: AddRecipeSignal, canActivate: [authGuard] },
     { path: 'recipes/:id', component: RecipeDetail },

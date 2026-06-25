@@ -5,14 +5,14 @@
 </mat-form-field>
 
 <div>
-    @if(recipes.status() === 'error'){
-    <p>Failed to load recipes.</p>
-    } @else if(recipes.status() === 'loading' || recipes.status() === 'idle'){
+    @if(filtered().error){
+    <p>An error occurred. Failed to load recipes.</p>
+    } @else if(filtered().loading){
     <p>Loading...</p>
-    } @else if(recipes.getAll().length === 0){
-    <p>No recipes are available.</p>
+    } @else if(filtered().results.length === 0){
+    <p>No recipes matching the filter are available.</p>
     } @else {
-    @for (recipe of filtered(); track recipe.id) {
+    @for (recipe of filtered().results; track recipe.id) {
     <a [routerLink]="['/recipes', recipe.id]">{{ recipe.name }} @if(recipe.isFavorite){★}</a>
     }
     }

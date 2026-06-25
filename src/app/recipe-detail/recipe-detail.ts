@@ -3,6 +3,7 @@ import { Ingredient, RecipeModel } from '../models';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { httpResource } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-recipe-detail',
@@ -15,7 +16,7 @@ export class RecipeDetail {
   protected readonly id = this.route.snapshot.params['id'];
 
   readonly recipe = httpResource<RecipeModel>(() =>
-    `http://localhost:3000/recipes/${this.id}`
+    `${environment.apiUrl}/recipes/${this.id}`
   );
 
   protected readonly servings = signal<number>(1);

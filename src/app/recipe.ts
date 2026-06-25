@@ -2,6 +2,7 @@ import { inject, Injectable, ResourceStatus } from '@angular/core';
 import { RecipeModel } from './models';
 import { httpResource, HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +10,7 @@ import { Observable } from 'rxjs';
 export class Recipe {
   private http = inject(HttpClient);
   readonly recipes = httpResource<RecipeModel[]>(() =>
-    'http://localhost:3000/recipes', {
+    `${environment.apiUrl}/recipes`, {
     defaultValue: [],
   });
 
@@ -26,6 +27,6 @@ export class Recipe {
   }
 
   addRecipe(model: RecipeModel): Observable<RecipeModel> {
-    return this.http.post<RecipeModel>("http://localhost:3000/recipes", model);
+    return this.http.post<RecipeModel>(`${environment.apiUrl}/recipes`, model);
   }
 }

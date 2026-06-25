@@ -65,7 +65,6 @@ export class AddRecipe {
           }
         }),
         catchError((err) => {
-          console.dir(err);
           this.snackBar.open('Failed to save recipe. Please try again.', 'Dismiss', {
             duration: 5000,
             panelClass: ['error-snackbar'],
