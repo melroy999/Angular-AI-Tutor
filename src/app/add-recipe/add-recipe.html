@@ -11,7 +11,7 @@
         <mat-label>Author</mat-label>
         <input type="email" matInput formControlName="authorEmail" />
     </mat-form-field>
-    <button matButton="filled" type="submit">Send</button>
+    <button matButton="filled" type="submit" [disabled]="submitting()">Send</button>
 </form>
 
 <a [routerLink]="['/recipes']">Return</a>
