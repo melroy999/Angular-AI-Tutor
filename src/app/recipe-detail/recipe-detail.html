@@ -1,30 +1,35 @@
-<a [routerLink]="['/recipes']">Return</a>
+<a matButton="filled" [routerLink]="['/recipes']">Return</a>
 
 @if(recipe.status() === 'error'){
 <p>Failed to load recipe.</p>
 } @else if (recipe.status() === 'resolved') {
-<div class="detail-container">
-    <img class="recipe-image" [src]="recipe.value()?.imgUrl" [alt]="'Photo of ' + recipe.value()?.name">
+<app-card>
+    <mat-card-title-group card-header>
+        <mat-card-title class="recipe-name">{{ recipe.value()?.name }}</mat-card-title>
+        <mat-card-subtitle class="recipe-author">Author: {{ recipe.value()?.authorEmail }}</mat-card-subtitle>
+    </mat-card-title-group>
 
-    <div class="recipe-info">
-        <h2 class="recipe-name">{{ recipe.value()?.name }}</h2>
-        <p class="recipe-description">{{ recipe.value()?.description }}</p>
-        <p class="recipe-author">Author: {{ recipe.value()?.authorEmail }}</p>
+    <div card-body id="detailContent">
+        <img class="recipe-image" [src]="recipe.value()?.imgUrl" [alt]="'Photo of ' + recipe.value()?.name">
 
-        <div class="servings-control">
-            <button matButton="outlined" (click)="decrease()">-</button>
-            <span>{{ servings() }} servings</span>
-            <button matButton="outlined" (click)="increase()">+</button>
+        <div class="recipe-info">
+            <p class="recipe-description">{{ recipe.value()?.description }}</p>
+
+            <div class="servings-control">
+                <button matButton="outlined" (click)="decrease()">-</button>
+                <span>{{ servings() }} servings</span>
+                <button matButton="outlined" (click)="increase()">+</button>
+            </div>
+
+            <h3 class="ingredients-heading">Ingredients</h3>
+            <ul class="ingredients-list">
+                @for (ingredient of ingredients(); track ingredient.name) {
+                <li>{{ ingredient.name }}, {{ ingredient.quantity }} {{ ingredient.unit }}</li>
+                }
+            </ul>
         </div>
-
-        <h3 class="ingredients-heading">Ingredients</h3>
-        <ul class="ingredients-list">
-            @for (ingredient of ingredients(); track ingredient.name) {
-            <li>{{ ingredient.name }}, {{ ingredient.quantity }} {{ ingredient.unit }}</li>
-            }
-        </ul>
     </div>
-</div>
+</app-card>
 } @else {
 <p>Loading...</p>
 }

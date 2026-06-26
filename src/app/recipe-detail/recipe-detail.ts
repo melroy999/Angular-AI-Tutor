@@ -4,10 +4,12 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { httpResource } from '@angular/common/http';
 import { environment } from '../../environments/environment';
+import { MatCardModule } from '@angular/material/card';
+import { Card } from '../card/card';
 
 @Component({
   selector: 'app-recipe-detail',
-  imports: [MatButtonModule, RouterLink],
+  imports: [MatButtonModule, RouterLink, MatCardModule, Card],
   templateUrl: './recipe-detail.html',
   styleUrl: './recipe-detail.css',
 })

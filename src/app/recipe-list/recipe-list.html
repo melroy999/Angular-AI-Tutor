@@ -3,7 +3,7 @@
         placeholder="Search..." />
 </mat-form-field>
 
-<div>
+<div id="recipeList">
     @if(filtered().error){
     <p>An error occurred. Failed to load recipes.</p>
     } @else if(filtered().loading){
@@ -12,14 +12,19 @@
     <p>No recipes matching the filter are available.</p>
     } @else {
     @for (recipe of filtered().results; track recipe.id) {
-    <a [routerLink]="['/recipes', recipe.id]">{{ recipe.name }} @if(recipe.isFavorite){★}</a>
+    <a [routerLink]="['/recipes', recipe.id]">
+        <app-card>
+            <mat-card-title-group card-header>
+                <mat-card-title>{{ recipe.name }} @if(recipe.isFavorite){★}</mat-card-title>
+                <img mat-card-sm-image [src]="recipe.imgUrl">
+            </mat-card-title-group>
+            <div card-body>{{ recipe.ingredients.length }} ingredients</div>
+        </app-card>
+    </a>
     }
     }
-</div>
-
-<div>
-    <a [routerLink]="['/recipes/new']">Add new recipe</a>
-</div>
-<div>
-    <a [routerLink]="['/recipes/new_signal']">Add new recipe (signal)</a>
+    <div id="recipeOptions">
+        <a matButton="filled" [routerLink]="['/recipes/new']" [disabled]="!auth.loggedIn()">Add new recipe</a>
+        <a matButton="filled" [routerLink]="['/recipes/new_signal']" [disabled]="!auth.loggedIn()">Add new recipe (signal)</a>
+    </div>
 </div>

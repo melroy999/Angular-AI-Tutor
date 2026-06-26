@@ -1,12 +1,15 @@
 :host {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 20px;
     padding: 1.5rem;
 }
 
-.detail-container {
-    display: flex;
-    gap: 2rem;
-    align-items: flex-start;
+#detailContent {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
 }
 
 .recipe-image {
