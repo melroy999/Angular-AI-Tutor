@@ -20,7 +20,11 @@
                 <mat-card-title>{{ recipe.name }} @if(recipe.isFavorite){★}</mat-card-title>
                 <img mat-card-sm-image [src]="recipe.imgUrl">
             </mat-card-title-group>
-            <div card-body>{{ recipe.ingredients.length }} ingredients</div>
+            <div card-body class="card-body">
+                <span class="recipe-description">{{ recipe.description | truncate: 50 }}</span>
+                <span>{{ recipe.rating | rating }}</span>
+                <span>{{ recipe.ingredients.length }} ingredients</span>
+            </div>
         </app-card>
     </a>
     }

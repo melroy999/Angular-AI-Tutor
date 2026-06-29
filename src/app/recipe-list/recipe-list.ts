@@ -11,10 +11,12 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Auth } from '../auth';
+import { TruncatePipe } from '../truncate-pipe';
+import { RatingPipe } from '../rating-pipe';
 
 @Component({
   selector: 'app-recipe-list',
-  imports: [FormsModule, RouterLink, MatFormFieldModule, MatInputModule, MatButtonModule, MatCardModule, MatProgressSpinnerModule, Card],
+  imports: [FormsModule, RouterLink, MatFormFieldModule, MatInputModule, MatButtonModule, MatCardModule, MatProgressSpinnerModule, Card, TruncatePipe, RatingPipe],
   templateUrl: './recipe-list.html',
   styleUrl: './recipe-list.css',
 })

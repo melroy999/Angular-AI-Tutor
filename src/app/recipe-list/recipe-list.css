@@ -20,6 +20,17 @@
     }
 }
 
+.card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 0.875rem;
+}
+
+.recipe-description {
+    color: #555;
+}
+
 .loading-overlay {
     position: absolute;
     inset: 0;
