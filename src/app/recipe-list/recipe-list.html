@@ -4,15 +4,17 @@
 </mat-form-field>
 
 <div id="recipeList">
-    @if(filtered().error){
+    @if(results.error()){
     <p>An error occurred. Failed to load recipes.</p>
-    } @else if(filtered().loading){
-    <p>Loading...</p>
-    } @else if(filtered().results.length === 0){
-    <p>No recipes matching the filter are available.</p>
     } @else {
-    @for (recipe of filtered().results; track recipe.id) {
-    <a [routerLink]="['/recipes', recipe.id]">
+    <div class="loading-overlay" [class.visible]="results.isLoading()">
+        <mat-spinner [diameter]="40" />
+    </div>
+    @if(displayedRecipes().length === 0 && !results.isLoading()){
+    <p>No recipes matching the filter are available.</p>
+    }
+    @for (recipe of displayedRecipes(); track recipe.id) {
+    <a [routerLink]="['/recipes', recipe.id]" animate.enter="fade-in" animate.leave="fade-out">
         <app-card>
             <mat-card-title-group card-header>
                 <mat-card-title>{{ recipe.name }} @if(recipe.isFavorite){★}</mat-card-title>
@@ -25,6 +27,7 @@
     }
     <div id="recipeOptions">
         <a matButton="filled" [routerLink]="['/recipes/new']" [disabled]="!auth.loggedIn()">Add new recipe</a>
-        <a matButton="filled" [routerLink]="['/recipes/new_signal']" [disabled]="!auth.loggedIn()">Add new recipe (signal)</a>
+        <a matButton="filled" [routerLink]="['/recipes/new_signal']" [disabled]="!auth.loggedIn()">Add new recipe
+            (signal)</a>
     </div>
 </div>
