@@ -7,6 +7,7 @@
       "authorEmail": "mario@italy.com",
       "imgUrl": "https://placehold.co/400x300",
       "isFavorite": true,
+      "rating": 4,
       "ingredients": [
         {
           "name": "Spaghetti",
@@ -42,6 +43,7 @@
       "authorEmail": "sofia@italy.com",
       "imgUrl": "https://placehold.co/400x200",
       "isFavorite": false,
+      "rating": 3,
       "ingredients": [
         {
           "name": "Tomatoes",

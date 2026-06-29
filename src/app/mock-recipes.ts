@@ -15,6 +15,7 @@ export const MOCK_RECIPES: RecipeModel[] = [
             { name: 'Pecorino Romano Cheese', quantity: 50, unit: 'g' },
             { name: 'Black Pepper', quantity: 1, unit: 'tsp' },
         ],
+        rating: 5,
     },
     {
         id: "2",
@@ -29,5 +30,6 @@ export const MOCK_RECIPES: RecipeModel[] = [
             { name: 'Fresh Basil', quantity: 1, unit: 'bunch' },
             { name: 'Extra Virgin Olive Oil', quantity: 2, unit: 'tbsp' },
         ],
+        rating: 3,
     },
 ];

@@ -21,4 +21,10 @@ export class Recipe {
   addRecipe(model: RecipeModel): Observable<RecipeModel> {
     return this.http.post<RecipeModel>(`${environment.apiUrl}/recipes`, model);
   }
+
+  updateRating(id: string, rating: number): Observable<RecipeModel> {
+    return this.http.patch<RecipeModel>(`${environment.apiUrl}/recipes/${id}`, {
+      rating
+    });
+  }
 }

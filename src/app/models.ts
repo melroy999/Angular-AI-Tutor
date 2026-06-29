@@ -11,5 +11,6 @@ export interface RecipeModel {
     authorEmail: string;
     imgUrl: string;
     isFavorite: boolean;
+    rating: number;
     ingredients: Ingredient[];
 }

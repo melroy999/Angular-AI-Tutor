@@ -6,15 +6,19 @@ import { httpResource } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { MatCardModule } from '@angular/material/card';
 import { Card } from '../card/card';
+import { StarRating } from '../star-rating/star-rating';
+import { FormsModule } from '@angular/forms';
+import { Recipe } from '../recipe';
 
 @Component({
   selector: 'app-recipe-detail',
-  imports: [MatButtonModule, RouterLink, MatCardModule, Card],
+  imports: [MatButtonModule, RouterLink, MatCardModule, Card, FormsModule, StarRating],
   templateUrl: './recipe-detail.html',
   styleUrl: './recipe-detail.css',
 })
 export class RecipeDetail {
   private readonly route = inject(ActivatedRoute);
+  private readonly recipeService = inject(Recipe);
   protected readonly id = this.route.snapshot.params['id'];
 
   readonly recipe = httpResource<RecipeModel>(() =>
@@ -40,5 +44,9 @@ export class RecipeDetail {
 
   protected decrease(): void {
     this.servings.update((current) => Math.max(1, current - 1));
+  }
+
+  protected onRatingChange(rating: number) {
+    this.recipeService.updateRating(this.id, rating).subscribe();
   }
 }

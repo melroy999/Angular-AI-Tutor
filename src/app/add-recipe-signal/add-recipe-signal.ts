@@ -50,6 +50,7 @@ export class AddRecipeSignal {
             imgUrl: 'https://placehold.co/400x300',
             isFavorite: false,
             ingredients: [],
+            rating: 1
           }).subscribe({
             next: () => {
               this.recipeForm().reset({ name: '', authorEmail: '', description: '' });
