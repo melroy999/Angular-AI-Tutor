@@ -11,19 +11,19 @@ export const httpErrorInterceptor: HttpInterceptorFn = (req, next) => {
       let message = ""
       if (err.status === 0) {
         message = "A network error occurred. Please try again."
+      } else if (err.status === 401) {
+        message = "You must be logged in to perform this action."
       } else if (err.status >= 500) {
         message = `A ${err.status} HTTP error occurred. Please try again.`
       }
       
-      if (message === "") {
-        throw err;
-      } else {
+      if (message !== "") {
         snackBar.open(message, 'Dismiss', {
           duration: 5000,
           panelClass: ['error-snackbar'],
         });
-        return EMPTY;
       }
+      throw err;
     })
   );
 };

@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal, viewChild } from '@angular/core';
 import { Ingredient, RecipeModel } from '../models';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
@@ -9,6 +9,7 @@ import { Card } from '../card/card';
 import { StarRating } from '../star-rating/star-rating';
 import { FormsModule } from '@angular/forms';
 import { Recipe } from '../recipe';
+import { EMPTY, catchError } from 'rxjs';
 
 @Component({
   selector: 'app-recipe-detail',
@@ -25,6 +26,15 @@ export class RecipeDetail {
   readonly recipe = httpResource<RecipeModel>(() =>
     `${this.apiUrl}/recipes/${this.id}`
   );
+
+  constructor() {
+    effect(() => {
+      const rating = this.recipe.value()?.rating;
+      if (rating !== undefined) {
+        this.lastConfirmedRating = rating;
+      }
+    });
+  }
 
   protected readonly servings = signal<number>(1);
   protected readonly ingredients = computed<Ingredient[]>(
@@ -47,7 +57,17 @@ export class RecipeDetail {
     this.servings.update((current) => Math.max(1, current - 1));
   }
 
+  private readonly starRating = viewChild(StarRating);
+  private lastConfirmedRating = 0;
+
   protected onRatingChange(rating: number) {
-    this.recipeService.updateRating(this.id, rating).subscribe();
+    this.recipeService.updateRating(this.id, rating).pipe(
+      catchError(() => {
+        this.starRating()?.writeValue(this.lastConfirmedRating);
+        return EMPTY;
+      })
+    ).subscribe(() => {
+      this.lastConfirmedRating = rating;
+    });
   }
 }
