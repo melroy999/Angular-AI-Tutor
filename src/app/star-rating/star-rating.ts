@@ -1,5 +1,6 @@
-import { Component, forwardRef, signal } from '@angular/core';
+import { Component, forwardRef, inject, signal } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { MAX_RATING } from '../tokens';
 
 @Component({
   selector: 'app-star-rating',
@@ -13,7 +14,8 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   }]
 })
 export class StarRating implements ControlValueAccessor {
-  protected readonly stars = [1, 2, 3, 4, 5];
+  private readonly maxRating = inject(MAX_RATING);
+  protected readonly stars = Array.from({ length: this.maxRating }, (_, i) => i + 1);
   readonly value = signal<number>(0);
 
   private onChange: (value: number) => void = () => {};

@@ -54,7 +54,7 @@ export class AddRecipe {
         imgUrl: 'https://placehold.co/400x300',
         isFavorite: false,
         ingredients: [],
-        rating: 1
+        rating: 0
       }).pipe(
         tap(() => {
           this.form.reset();

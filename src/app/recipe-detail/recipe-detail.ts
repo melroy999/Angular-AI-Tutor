@@ -3,7 +3,7 @@ import { Ingredient, RecipeModel } from '../models';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { httpResource } from '@angular/common/http';
-import { environment } from '../../environments/environment';
+import { API_URL } from '../tokens';
 import { MatCardModule } from '@angular/material/card';
 import { Card } from '../card/card';
 import { StarRating } from '../star-rating/star-rating';
@@ -19,10 +19,11 @@ import { Recipe } from '../recipe';
 export class RecipeDetail {
   private readonly route = inject(ActivatedRoute);
   private readonly recipeService = inject(Recipe);
+  private readonly apiUrl = inject(API_URL);
   protected readonly id = this.route.snapshot.params['id'];
 
   readonly recipe = httpResource<RecipeModel>(() =>
-    `${environment.apiUrl}/recipes/${this.id}`
+    `${this.apiUrl}/recipes/${this.id}`
   );
 
   protected readonly servings = signal<number>(1);

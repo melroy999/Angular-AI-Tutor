@@ -4,12 +4,13 @@ import { Recipe } from './recipe';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ActivatedRoute, provideRouter } from '@angular/router';
-import { environment } from '../environments/environment';
 import { MOCK_RECIPES } from './mock-recipes';
+import { API_URL } from './tokens';
 
 describe('Recipe', () => {
   let service: Recipe;
   let httpMock: HttpTestingController;
+  let apiUrl: string;
 
   beforeEach(() => {
     TestBed.resetTestingModule();
@@ -23,11 +24,13 @@ describe('Recipe', () => {
             snapshot: { params: { id: '1' }, data: { recipes: [] } }
           }
         },
+        { provide: API_URL, useValue: 'http://test-api' },
       ]
     });
 
     service = TestBed.inject(Recipe);
     httpMock = TestBed.inject(HttpTestingController);
+    apiUrl = TestBed.inject(API_URL);
   });
 
   afterEach(() => {
@@ -42,7 +45,7 @@ describe('Recipe', () => {
   it('`fetchAll()` should GET /recipes', () => {
     service.fetchAll().subscribe();
 
-    const req = httpMock.expectOne(`${environment.apiUrl}/recipes`);
+    const req = httpMock.expectOne(`${apiUrl}/recipes`);
     expect(req.request.method).toBe('GET');
     req.flush(MOCK_RECIPES);
   });
@@ -51,7 +54,7 @@ describe('Recipe', () => {
     const searchTerm = "search";
     service.searchRecipes(searchTerm).subscribe();
 
-    const req = httpMock.expectOne(`${environment.apiUrl}/recipes?name:contains=${searchTerm}`);
+    const req = httpMock.expectOne(`${apiUrl}/recipes?name:contains=${searchTerm}`);
     expect(req.request.method).toBe('GET');
     req.flush(MOCK_RECIPES);
   });
@@ -71,7 +74,7 @@ describe('Recipe', () => {
 
     service.addRecipe(recipe).subscribe();
 
-    const req = httpMock.expectOne(`${environment.apiUrl}/recipes`);
+    const req = httpMock.expectOne(`${apiUrl}/recipes`);
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual(recipe);
     req.flush(mockResponse);

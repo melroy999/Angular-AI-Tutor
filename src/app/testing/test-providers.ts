@@ -5,6 +5,7 @@ import { vi } from 'vitest';
 import { of } from 'rxjs';
 import { Auth } from '../auth';
 import { signal } from '@angular/core';
+import { API_URL } from '../tokens';
 
 export const commonTestProviders = [
     provideRouter([]),
@@ -16,7 +17,8 @@ export const commonTestProviders = [
             loggedIn:
                 signal(true)
         }
-    }
+    },
+    { provide: API_URL, useValue: 'http://localhost:3000' },
 ];
 
 export const recipeMockProvider = [
