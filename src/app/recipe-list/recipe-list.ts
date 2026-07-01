@@ -13,10 +13,11 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Auth } from '../auth';
 import { TruncatePipe } from '../truncate-pipe';
 import { RatingPipe } from '../rating-pipe';
+import { HighlightDirective } from '../highlight-directive';
 
 @Component({
   selector: 'app-recipe-list',
-  imports: [FormsModule, RouterLink, MatFormFieldModule, MatInputModule, MatButtonModule, MatCardModule, MatProgressSpinnerModule, Card, TruncatePipe, RatingPipe],
+  imports: [FormsModule, RouterLink, MatFormFieldModule, MatInputModule, MatButtonModule, MatCardModule, MatProgressSpinnerModule, Card, TruncatePipe, RatingPipe, HighlightDirective],
   templateUrl: './recipe-list.html',
   styleUrl: './recipe-list.css',
 })

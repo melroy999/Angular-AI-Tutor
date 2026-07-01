@@ -64,7 +64,8 @@ describe('Recipe', () => {
       imgUrl: '',
       ingredients: [],
       isFavorite: false,
-      name: ''
+      name: '',
+      rating: 5
     }
     const mockResponse = { ...recipe, id: "1" };
 
